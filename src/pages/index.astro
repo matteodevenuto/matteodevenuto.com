@@ -7,6 +7,7 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Hr from "@/components/Hr.astro";
 import LinkButton from "@/components/LinkButton.astro";
+import NewsletterForm from "@/components/NewsletterForm.astro";
 import Socials from "@/components/Socials.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import { SITE, SOCIALS } from "@/config";
@@ -16,12 +17,10 @@ import getSortedPosts from "@/utils/getSortedPosts";
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
-const posts2025AndLater = sortedPosts.filter(({ data }) => data.pubDatetime.getFullYear() >= 2025);
-const featuredPosts = posts2025AndLater.filter(({ data }) => data.featured);
-const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured).slice(0, 2);
 ---
 
-<Layout description="Peter Steinberger: AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.">
+<Layout description="I’m a passionate Forex Trader and proud Ambassador of @falconfxtrading  I founded @granbrasmonaco — your strategic partner in Monaco for innovative solutions in strategy, marketing, and business growth.">
   <StructuredData type="WebSite" data={{}} />
   <StructuredData type="Person" data={{}} />
   <Header />
@@ -30,15 +29,15 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
       <div class="flex flex-col sm:flex-row items-start gap-4">
         <a href="/about" class="block mx-auto sm:mx-0 group">
           <img 
-            src="/peter-avatar.jpg" 
-            alt="Peter Steinberger" 
+            src="/avatar.png" 
+            alt="Matteo De Venuto" 
             class="w-40 h-40 rounded-full object-cover flex-shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
           />
         </a>
         <div class="flex-1 text-center sm:text-left">
           <div class="flex items-center gap-2 justify-center sm:justify-start">
             <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
-              Hi, I'm @steipete.
+              Hi, I'm @matteodevenuto.
             </h1>
             <a
               target="_blank"
@@ -56,8 +55,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             </a>
           </div>
           <p>
-            AI-powered tools from Swift roots to web frontiers.<br />
-            Every commit lands on GitHub for you to fork & remix.
+            Trader and Ambassador at Falcon FX | Passionate about markets, programming, technology and much more.
           </p>
           {
             // only display if at least one social link is enabled
@@ -74,39 +72,27 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
     <Hr />
 
     {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-            <ul>
-              {featuredPosts.map((data) => (
-                <Card variant="h3" {...data} showImage={false} />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
-
-    {
       recentPosts.length > 0 && (
         <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
           <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} showImage={false} />,
-            )}
+            {recentPosts.map((data) => (
+              <Card variant="h3" {...data} showImage={false} />
+            ))}
           </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
+          <div>
+      <LinkButton href="/blog">
         All Posts
         <IconArrowRight class="inline-block" />
       </LinkButton>
+    </div>
+        </section>
+      )
+    }
+    
+
+    <div class="max-w-2xl mx-auto">
+      <NewsletterForm />
     </div>
   </main>
   <Footer />

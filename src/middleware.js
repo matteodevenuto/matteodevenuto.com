@@ -1,14 +1,14 @@
 export const onRequest = async (context, next) => {
   const url = new URL(context.request.url);
 
-  // Redirect /blog/ paths to /posts/
-  if (url.pathname.startsWith("/blog/")) {
-    return context.redirect("/posts/" + url.pathname.slice(6), 301);
+  // Redirect /posts paths to /blog
+  if (url.pathname.startsWith("/posts/")) {
+    return context.redirect("/blog" + url.pathname.slice(6), 301);
   }
 
-  // Redirect /blog to /posts
-  if (url.pathname === "/blog" || url.pathname === "/blog/") {
-    return context.redirect("/posts/", 301);
+  // Redirect /posts to /blog
+  if (url.pathname === "/posts" || url.pathname === "/posts/") {
+    return context.redirect("/blog", 301);
   }
 
   return next();

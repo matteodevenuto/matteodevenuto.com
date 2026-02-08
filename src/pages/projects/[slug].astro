@@ -1,0 +1,237 @@
+nks---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import IconYouTube from "@/assets/icons/IconYouTube.svg";
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection("projects" as any);
+  const projects = allProjects.filter((project: any) => !project.data.draft);
+  
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/^.*\//, "").replace(/\.md$/, "") },
+    props: { project },
+  }));
+}
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { data, body } = project;
+const { Content } = await render(project);
+
+const {
+  title,
+  description,
+  image,
+  heroImage,
+  videoDemo,
+  websiteUrl,
+  githubUrl,
+  codeUrl,
+  technologies = [],
+  status = 'in-progress',
+  pubDatetime,
+  tags = []
+} = data;
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "completed": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+    case "in-progress": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+    case "ongoing": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+    case "planned": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+  }
+};
+
+const getStatusText = (status: string) => {
+  switch (status) {
+    case "completed": return "Completed";
+    case "in-progress": return "In Progress";
+    case "ongoing": return "Ongoing";
+    case "planned": return "Planned";
+    default: return status;
+  }
+};
+
+// Enforce canonical URL to always be /projects/ path without trailing slash
+const canonicalPath = `/projects/${Astro.params.slug}`;
+const canonicalURL = new URL(canonicalPath, Astro.site).toString();
+---
+
+<Layout
+  title={title}
+
+  canonicalURL={canonicalURL}
+  scrollSmooth={true}
+>
+  <Header />
+
+  <!-- Back Button -->
+  {
+    SITE.showBackButton && (
+      <div class="mx-auto flex w-full max-w-3xl items-center justify-start px-2">
+        <a
+          id="back-button"
+          href="/projects"
+          class="group inline-block hover:text-accent focus-outline mt-8 mb-8 flex hover:text-foreground/75"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="inline-block size-6"
+          >
+            <polyline points="15,18 9,12 15,6"></polyline>
+          </svg>
+          <span class="ml-2">Back to Projects</span>
+        </a>
+      </div>
+    )
+  }
+
+  <main id="main-content" class="px-4 sm:px-6 lg:px-8">
+    <article class="mx-auto max-w-3xl">
+      {/* Hero Image */}
+      {(image || heroImage) && (
+        <div class="rounded-lg overflow-hidden mb-6 bg-skin-fill border">
+          <img
+            src={heroImage || image}
+            alt={title}
+            class="w-full object-cover max-h-96"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      {/* Header */}
+      <header class="mb-8">
+        <div class="flex items-start justify-between mb-4">
+          <h1 class="text-3xl font-bold text-accent mb-2">{title}</h1>
+          <span class={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(status)}`}>
+            {getStatusText(status)}
+          </span>
+        </div>
+        
+
+        
+        <div class="flex items-center gap-4 text-sm opacity-75">
+          {pubDatetime && (
+            <div class="flex items-center gap-2">
+              <FormattedDate date={pubDatetime} />
+            </div>
+          )}
+            
+          {tags && tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {tags.map((tag: string) => (
+                  <span class="px-2 py-1 bg-skin-fill rounded-md text-skin-base text-sm">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+{/* Links */}
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold mb-4">Links</h2>
+        <div class="flex flex-wrap gap-3">
+          {websiteUrl && (
+            <a 
+              href={websiteUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-md hover:bg-accent-dark transition-colors"
+            >
+              <IconArrowRight width={16} height={16} />
+              Visit Website
+            </a>
+          )}
+          {githubUrl && (
+            <a 
+              href={githubUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <IconGitHub width={16} height={16} />
+              GitHub
+            </a>
+          )}
+          {codeUrl && (
+            <a 
+              href={codeUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <IconGitHub width={16} height={16} />
+              View Code
+            </a>
+          )}
+          {videoDemo && (
+            <a 
+              href={videoDemo} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
+              <IconYouTube width={16} height={16} />
+              Watch Demo
+            </a>
+          )}
+        </div>
+      </section>
+
+      {/* Technologies */}
+      {technologies && technologies.length > 0 && (
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold mb-4">Technologies</h2>
+          <div class="flex flex-wrap gap-2">
+            {technologies.map((tech: string) => (
+              <span class="px-3 py-1 bg-skin-fill text-sm rounded-md text-skin-base font-mono border border-gray-200 dark:border-gray-700">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      
+
+      {/* Main Content */}
+      <section class="mb-8">
+        <div class="prose prose-lg max-w-none dark:prose-invert">
+          <Content />
+        </div>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const projectLayout = (document.querySelector("#main-content") as HTMLElement)?.dataset?.layout;
+    if (projectLayout) {
+      sessionStorage.setItem("backUrl", `/projects/${Astro.params.slug}`);
+    }
+  });
+</script>

@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "@/components/ProjectCard.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+
+// Get all projects and filter out drafts using type assertion
+const allProjects = await getCollection("projects" as any);
+const projects = allProjects.filter((project: any) => !project.data.draft);
+
+// Sort by featured first, then by date
+const sortedProjects = projects.sort((a: any, b: any) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  
+  const dateA = a.data.pubDatetime || new Date(0);
+  const dateB = b.data.pubDatetime || new Date(0);
+  return dateB.getTime() - dateA.getTime();
+});
+---
+
+<Layout description="Projects showcase - Explore my work in trading, business consulting, and software development.">
+  <Header />
+  <main id="main-content" data-layout="projects" class="px-4 sm:px-6 lg:px-8">
+    <section class="pt-12 pb-6">
+      <h1 class="text-3xl font-bold mb-4">Projects</h1>
+      <p class="text-lg opacity-80 mb-8">
+        Here are some of the projects I'm working on or have completed. 
+      </p>
+      
+      {sortedProjects.length > 0 ? (
+        <ul class="space-y-0">
+          {sortedProjects.map((project) => (
+            <ProjectCard
+              data={project.data}
+              id={project.id}
+              filePath={project.filePath}
+            />
+          ))}
+        </ul>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-xl opacity-70">No projects to display yet. Check back soon!</p>
+        </div>
+      )}
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const projectsLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (projectsLayout) {
+      sessionStorage.setItem("backUrl", "/projects");
+    }
+  });
+</script>

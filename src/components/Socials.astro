@@ -1,9 +1,10 @@
 ---
-import IconBlueSky from "@/assets/icons/IconBlueSky.svg";
+import IconYouTube from "@/assets/icons/IconYouTube.svg";
 import IconBrandX from "@/assets/icons/IconBrandX.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconLinkedin from "@/assets/icons/IconLinkedin.svg";
 import IconMail from "@/assets/icons/IconMail.svg";
+import IconInstagram from "@/assets/icons/IconInstagram.svg";
 import { SOCIALS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
 
@@ -14,26 +15,28 @@ export interface Props {
 const { centered = false } = Astro.props;
 
 const iconMap = {
-  github: IconGitHub,
   twitter: IconBrandX,
-  bluesky: IconBlueSky,
+  instagram: IconInstagram,
+  youtube: IconYouTube,
   linkedin: IconLinkedin,
+  github: IconGitHub,
   mail: IconMail,
 };
 ---
 
-<div class:list={["flex-wrap justify-center gap-1", { flex: centered }]}>
+<div class:list={["flex flex-wrap justify-center gap-0", { flex: centered }]}>
   {
     SOCIALS.filter((social) => social.active).map((social) => {
       const IconComponent = iconMap[social.icon as keyof typeof iconMap];
       return (
         <LinkButton
           href={social.href}
-          class="p-2 hover:rotate-6 sm:p-1"
+          class="p-1 hover:rotate-6"
           title={social.linkTitle}
+          target="_blank"
         >
           {IconComponent && (
-            <IconComponent class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+            <IconComponent class="inline-block size-6 scale-110 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent" />
           )}
           <span class="sr-only">{social.linkTitle}</span>
         </LinkButton>

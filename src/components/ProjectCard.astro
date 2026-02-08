@@ -1,0 +1,180 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import IconYouTube from "@/assets/icons/IconYouTube.svg";
+import IconCalendar from "@/assets/icons/IconCalendar.svg";
+
+interface ProjectData {
+  title: string;
+
+  featured?: boolean;
+  draft?: boolean;
+  tags: string[];
+  image?: string;
+  heroImage?: string;
+  videoDemo?: string;
+  websiteUrl?: string;
+  codeUrl?: string;
+  githubUrl?: string;
+  pubDatetime?: Date;
+  technologies?: string[];
+  status?: "completed" | "in-progress" | "planned";
+}
+
+export interface Props {
+  data: ProjectData;
+  body?: string;
+  id: string;
+  filePath?: string;
+  variant?: "h2" | "h3";
+}
+
+const { variant = "h2", data, body, id, filePath } = Astro.props;
+
+const { 
+  title, 
+  image, 
+  heroImage,
+  videoDemo, 
+  websiteUrl, 
+  githubUrl, 
+  codeUrl, 
+  technologies = [],
+  status = 'in-progress',
+  pubDatetime
+} = data;
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "completed": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+    case "in-progress": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+    case "ongoing": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+    case "planned": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+  }
+};
+
+const getStatusText = (status: string) => {
+  switch (status) {
+    case "completed": return "Completed";
+    case "in-progress": return "In Progress";
+    case "ongoing": return "Ongoing";
+    case "planned": return "Planned";
+    default: return status;
+  }
+};
+
+const formatDate = (date?: Date) => {
+  if (!date) return "";
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+};
+---
+
+<li class="my-8 border rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+  <div class="flex flex-col">
+    {/* Header Section */}
+    <div class="p-6 pb-4">
+      <div class="flex items-start justify-between mb-4">
+        <a href={`/projects/${id.split('/').pop()?.replace('.md', '')}`} class="text-2xl font-bold text-accent hover:underline transition-colors">
+        {title}
+      </a>
+        <span class={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(status)}`}>
+          {getStatusText(status)}
+        </span>
+      </div>
+      
+      
+      
+      {pubDatetime && (
+        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
+          <IconCalendar width={14} height={14} />
+          <span>Started {formatDate(pubDatetime)}</span>
+        </div>
+      )}
+    </div>
+
+     {/* Image Section */}
+     {(image || heroImage) && (
+       <div class="mb-6">
+         <img
+           src={heroImage || image}
+           alt={title}
+           class="w-full rounded-lg shadow-lg object-cover max-h-96"
+           loading="lazy"
+         />
+       </div>
+     )}
+
+    {/* Technologies Section */}
+    {technologies && technologies.length > 0 && (
+      <div class="px-6 pb-4">
+        <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Technologies</h4>
+        <div class="flex flex-wrap gap-2">
+          {technologies.map((tech: string) => (
+            <span class="px-3 py-1 bg-skin-fill text-xs rounded-md text-skin-base font-mono border border-gray-200 dark:border-gray-700">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+
+
+
+    {/* Links Section */}
+    <div class="px-6 pb-6">
+      <div class="flex flex-wrap gap-3 border-t pt-4">
+        {websiteUrl && (
+          <a 
+            href={websiteUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-md hover:bg-accent-dark transition-colors"
+          >
+            <IconArrowRight width={16} height={16} />
+            Visit Website
+          </a>
+        )}
+        {githubUrl && (
+          <a 
+            href={githubUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <IconGitHub width={16} height={16} />
+            GitHub
+          </a>
+        )}
+        {codeUrl && (
+          <a 
+            href={codeUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <IconGitHub width={16} height={16} />
+            View Code
+          </a>
+        )}
+        {videoDemo && (
+          <a 
+            href={videoDemo} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 border border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          >
+            <IconYouTube width={16} height={16} />
+            Watch Demo
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</li>

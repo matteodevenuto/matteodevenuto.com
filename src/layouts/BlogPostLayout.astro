@@ -14,9 +14,9 @@ type Props = CollectionEntry<"blog">["data"] & {
 
 const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } = Astro.props;
 
-// Enforce canonical URL to always be /posts/ path without trailing slash
+// Enforce canonical URL to always be /blog/ path without trailing slash
 // This matches Vercel's trailingSlash: false configuration
-const canonicalPath = `/posts/${slug}`;
+const canonicalPath = `/blog/${slug}`;
 const canonicalURL = new URL(canonicalPath, Astro.site).toString();
 ---
 
@@ -34,7 +34,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
       <div class="mx-auto flex w-full max-w-3xl items-center justify-start px-2">
         <a
           id="back-button"
-          href="/"
+          href="/blog"
           class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"
         >
           <svg
@@ -51,7 +51,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M15 6l-6 6l6 6" />
           </svg>
-          <span>Go back</span>
+          <span>Back to Blog</span>
         </a>
       </div>
     )

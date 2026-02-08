@@ -181,13 +181,13 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
     <div 
       data-pagefind-ignore 
       class="flex flex-col sm:flex-row justify-between gap-6"
-      data-prev-url={prevPost ? `/posts/${prevPost.slug}` : ''}
-      data-next-url={nextPost ? `/posts/${nextPost.slug}` : ''}
+      data-prev-url={prevPost ? `/blog/${prevPost.slug}` : ''}
+      data-next-url={nextPost ? `/blog/${nextPost.slug}` : ''}
     >
       {
         prevPost && (
           <a
-            href={`/posts/${prevPost.slug}`}
+            href={`/blog/${prevPost.slug}`}
             class="flex gap-2 hover:opacity-75 items-start"
             id="prev-post-link"
           >
@@ -202,7 +202,7 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
       {
         nextPost && (
           <a
-            href={`/posts/${nextPost.slug}`}
+            href={`/blog/${nextPost.slug}`}
             class="flex gap-2 hover:opacity-75 items-start justify-end text-right ml-auto"
             id="next-post-link"
           >

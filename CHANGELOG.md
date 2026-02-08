@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Client-side redirect handles domain detection and .md routing
   - Works around Vercel's limitations with domain-based rewrites for static sites
 - Markdown (.md) endpoint support for all pages - append `.md` to any URL to get raw markdown content
-  - Blog posts: `/posts/YEAR/post-slug.md`
+  - Blog posts: `/blog/YEAR/post-slug.md`
   - Root pages: `/about.md`
 - Raw markdown served with `Content-Type: text/plain` and proper caching headers
 - Redirect from steipete.me/*.md URLs to steipete.md/* (#133)

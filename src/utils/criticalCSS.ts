@@ -177,7 +177,7 @@ export function getPageCriticalCSS(pagePath: string): string {
     );
   }
 
-  if (pagePath.startsWith("/posts/")) {
+  if (pagePath.startsWith("/blog/")) {
     // Blog post specific critical CSS
     return (
       criticalCSS +

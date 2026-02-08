@@ -6,8 +6,7 @@ export const GET: APIRoute = async () => {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
 
-  let markdownContent = `# Archives\n\n`;
-  markdownContent += `Total posts: ${sortedPosts.length}\n\n`;
+  let markdownContent = `# All Posts\n\n`;
 
   // Group posts by year
   const postsByYear = sortedPosts.reduce(
@@ -23,14 +22,21 @@ export const GET: APIRoute = async () => {
   // Sort years descending
   const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
-  markdownContent += `## Posts by Year\n\n`;
-
   for (const year of years) {
-    const count = postsByYear[Number(year)].length;
-    markdownContent += `- [${year}](/blog.md#${year}) (${count} post${count !== 1 ? "s" : ""})\n`;
+    markdownContent += `## ${year}\n\n`;
+
+    for (const post of postsByYear[Number(year)]) {
+      const date = post.data.pubDatetime.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      markdownContent += `- ${date}: [${post.data.title}](/blog/${post.id}.md)\n`;
+    }
+
+    markdownContent += "\n";
   }
 
-  markdownContent += `\n---\n\n[Back to Home](/index.md) | [All Posts](/blog.md)`;
+  markdownContent += `---\n\n[Back to Home](/index.md)`;
 
   return new Response(markdownContent, {
     status: 200,
