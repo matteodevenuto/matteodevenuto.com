@@ -14,12 +14,10 @@ const { variant = "default" } = Astro.props;
   )}
   
   <form
-    action="https://buttondown.com/api/emails/embed-subscribe/matteodevenuto"
+    action="/api/subscribe"
     method="post"
-    target="_blank"
     class="flex flex-col sm:flex-row gap-3"
   >
-    <input type="hidden" name="tag" value="matteodevenuto" />
     <input
       type="text"
       name="name"

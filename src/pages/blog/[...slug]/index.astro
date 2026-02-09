@@ -25,7 +25,20 @@ export async function getStaticPaths() {
   return [...postResult, ...unlistedResult];
 }
 
-const { post } = Astro.props;
+let { post } = Astro.props;
+
+// Fallback for development mode: if post not found, try to find it by matching slug
+if (!post && import.meta.env.DEV) {
+  const allPosts = await getCollection("blog");
+  const slug = Astro.params.slug;
+  
+  post = allPosts.find((p) => {
+    const postSlug = getPath(p.id, p.filePath, false);
+    // Remove leading slash for comparison
+    const normalizedPostSlug = postSlug.replace(/^\//, '');
+    return normalizedPostSlug === slug;
+  });
+}
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);

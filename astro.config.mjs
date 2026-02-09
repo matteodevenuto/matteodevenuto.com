@@ -3,6 +3,7 @@
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
@@ -13,6 +14,8 @@ import { remarkLazyLoadImages } from "./src/utils/remarkLazyLoadImages.mjs";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
+  adapter: vercel(),
   site: SITE.website,
   markdown: {
     remarkPlugins: [
