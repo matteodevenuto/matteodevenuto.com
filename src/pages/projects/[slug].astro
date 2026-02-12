@@ -10,12 +10,14 @@ import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
 import IconYouTube from "@/assets/icons/IconYouTube.svg";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
-  const allProjects = await getCollection("projects" as any);
+  const allProjects = await getCollection("projects");
   const projects = allProjects.filter((project: any) => !project.data.draft);
   
-  return projects.map((project) => ({
-    params: { slug: project.id.replace(/^.*\//, "").replace(/\.md$/, "") },
+  return projects.map((project: any) => ({
+    params: { slug: project.id.replace(/\.md$/, "") },
     props: { project },
   }));
 }
@@ -25,6 +27,11 @@ type Props = {
 };
 
 const { project } = Astro.props;
+
+if (!project) {
+  return Astro.redirect('/projects');
+}
+
 const { data, body } = project;
 const { Content } = await render(project);
 
@@ -45,11 +52,21 @@ const {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "completed": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-    case "in-progress": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
-    case "ongoing": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
-    case "planned": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
-    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+    case "completed": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 border border-green-200 dark:border-green-700";
+    case "in-progress": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-700";
+    case "ongoing": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 border border-purple-200 dark:border-purple-700";
+    case "planned": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-700";
+    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-700";
+  }
+};
+
+const getStatusDotColor = (status: string) => {
+  switch (status) {
+    case "completed": return "bg-green-500 dark:bg-green-400";
+    case "in-progress": return "bg-blue-500 dark:bg-blue-400";
+    case "ongoing": return "bg-purple-500 dark:bg-purple-400";
+    case "planned": return "bg-gray-500 dark:bg-gray-400";
+    default: return "bg-gray-500 dark:bg-gray-400";
   }
 };
 
@@ -110,7 +127,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
       {(image || heroImage) && (
         <div class="rounded-lg overflow-hidden mb-6 bg-skin-fill border">
           <img
-            src={heroImage || image}
+            src={typeof heroImage === 'string' ? heroImage : typeof image === 'string' ? image : ''}
             alt={title}
             class="w-full object-cover max-h-96"
             loading="eager"
@@ -122,7 +139,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
       <header class="mb-8">
         <div class="flex items-start justify-between mb-4">
           <h1 class="text-3xl font-bold text-accent mb-2">{title}</h1>
-          <span class={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(status)}`}>
+          <span class={`inline-flex items-center justify-center text-center whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase border shadow-sm ${getStatusColor(status)}`}>
             {getStatusText(status)}
           </span>
         </div>
@@ -158,7 +175,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
               href={websiteUrl} 
               target="_blank" 
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-md hover:bg-accent-dark transition-colors"
+              class="inline-flex items-center justify-center gap-2 px-4 py-2 min-w-40 bg-accent text-white rounded-md hover:bg-accent-dark transition-colors"
             >
               <IconArrowRight width={16} height={16} />
               Visit Website
@@ -191,7 +208,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
               href={videoDemo} 
               target="_blank" 
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-4 py-2 border border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+              class="inline-flex items-center justify-center gap-2 px-4 py-2 min-w-40 border border-red-300 dark:border-red-600 text-red-600 dark:text-red-400 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             >
               <IconYouTube width={16} height={16} />
               Watch Demo

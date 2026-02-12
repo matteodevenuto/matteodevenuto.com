@@ -4,6 +4,7 @@ export interface Props {
 }
 
 const { variant = "default" } = Astro.props;
+const formId = `newsletter-form-${Math.random().toString(36).slice(2)}`;
 ---
 
 <div class={variant === 'default' ? 'newsletter-box bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-6 my-8' : 'newsletter-compact mt-6'}>
@@ -12,24 +13,23 @@ const { variant = "default" } = Astro.props;
       Sign up for updates !
     </p>
   )}
-  
+
   <form
-    action="/api/subscribe"
-    method="post"
+    id={formId}
     class="flex flex-col sm:flex-row gap-3"
   >
     <input
       type="text"
       name="name"
       placeholder="Your Name"
-      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+      class="flex-1 min-w-0 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-[#212529] dark:text-[#eaedf3] placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
     <input
       type="email"
       name="email"
       placeholder="Your Email"
       required
-      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+      class="flex-1 min-w-0 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-[#212529] dark:text-[#eaedf3] placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
     <button
       type="submit"
@@ -39,7 +39,9 @@ const { variant = "default" } = Astro.props;
       Subscribe
     </button>
   </form>
-  
+
+  <div id={`${formId}-message`} class="mt-3 text-sm hidden"></div>
+
   {/*
   {variant === 'default' && (
     <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
@@ -49,12 +51,57 @@ const { variant = "default" } = Astro.props;
   */}
 </div>
 
+<script define:vars={{ formId }}>
+  const form = document.getElementById(formId);
+  const messageEl = document.getElementById(`${formId}-message`);
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button?.textContent;
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Subscribing...';
+    }
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        messageEl.className = 'mt-3 text-sm text-gray-600 dark:text-gray-400';
+        messageEl.textContent = 'Success! Please check your email to confirm your subscription.';
+        form.reset();
+      } else {
+        messageEl.className = 'mt-3 text-sm text-gray-600 dark:text-gray-400';
+        messageEl.textContent = result.error || 'Something went wrong. Please try again.';
+      }
+    } catch (error) {
+      messageEl.className = 'mt-3 text-sm text-gray-600 dark:text-gray-400';
+      messageEl.textContent = 'Network error. Please try again.';
+    } finally {
+      messageEl.classList.remove('hidden');
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    }
+  });
+</script>
+
 <style>
   @media (max-width: 640px) {
     .newsletter-box {
-      margin-left: -1rem;
-      margin-right: -1rem;
-      border-radius: 0;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0.5rem;
     }
   }
 </style>

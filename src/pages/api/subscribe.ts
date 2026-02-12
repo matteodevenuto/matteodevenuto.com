@@ -25,11 +25,18 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const publicationId = "2c5af3aa-a4c4-448a-ae85-1e4bdd7c84e7";
+  const publicationId = import.meta.env.BEEHIIV_PUBLICATION_ID;
   const apiKey = import.meta.env.BEEHIIV_API_KEY;
 
   if (!apiKey) {
     return new Response(JSON.stringify({ error: "API key not configured" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  if (!publicationId) {
+    return new Response(JSON.stringify({ error: "Publication ID not configured" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
@@ -61,7 +68,13 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { "Content-Type": "application/json" },
       });
     } else {
-      const error = await response.json();
+      const errorText = await response.text();
+      let error: { message?: string };
+      try {
+        error = JSON.parse(errorText);
+      } catch {
+        error = { message: errorText };
+      }
       return new Response(JSON.stringify({ error: error.message || "Subscription failed" }), {
         status: response.status,
         headers: { "Content-Type": "application/json" },
