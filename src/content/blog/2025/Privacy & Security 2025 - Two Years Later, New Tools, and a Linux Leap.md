@@ -31,7 +31,7 @@ tags:
 - Open Source
 ---
 
-It’s been a little over two years since my last blog post about my privacy and digital security journey, which you can find [here](https://matteodevenuto.com/blog/my-privacy-and-digital-security-journey...-so-far-/). A lot has changed and evolved in that time, so I figured it’s time for an update.
+It’s been a little over two years since my last blog post about my privacy and digital security journey, which you can find [here](/blog/my-privacy-and-digital-security-journey...-so-far-/). A lot has changed and evolved in that time, so I figured it’s time for an update.
 
 ### Hardware Updates
 
@@ -59,7 +59,7 @@ On the AI side, I’ve been mostly using [Grok](https://grok.com). For now, I’
 
 ### What’s Stayed the Same
 
-The rest of my setup has largely stayed consistent—at least until I switch phones. Once that happens, I expect a cascade of changes, and I’ll write a dedicated post about the new phone setup when the time comes. If you’re interested in the rest please read my previous blog post from 2 years ago [here](http://matteodevenuto.com/blog/my-privacy-and-digital-security-journey...-so-far-/).
+The rest of my setup has largely stayed consistent—at least until I switch phones. Once that happens, I expect a cascade of changes, and I’ll write a dedicated post about the new phone setup when the time comes. If you’re interested in the rest please read my previous blog post from 2 years ago [here](/blog/my-privacy-and-digital-security-journey...-so-far-/).
 
 ### New Resources
 
