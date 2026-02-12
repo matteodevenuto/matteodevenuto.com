@@ -7,6 +7,7 @@ import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
+import rehypeExternalLinks from "rehype-external-links";
 import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
 import { SITE } from "./src/config";
@@ -24,6 +25,7 @@ export default defineConfig({
       [remarkCollapse, { test: "Table of contents" }],
       remarkLazyLoadImages,
     ],
+    rehypePlugins: [[rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
