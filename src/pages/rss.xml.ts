@@ -18,6 +18,16 @@ export async function GET() {
     items: sortedPosts.map((post) => {
       let html = parser.render(post.body || "");
 
+      // Add hero image at the top if available
+      if (post.data.heroImage) {
+        const heroImageUrl = post.data.heroImage.startsWith("http")
+          ? post.data.heroImage
+          : `${SITE.website}${post.data.heroImage}`;
+
+        const heroImageHtml = `<p><img src="${heroImageUrl}" alt="${post.data.title}" style="max-width: 100%; height: auto;"/></p>`;
+        html = heroImageHtml + html;
+      }
+
       // Fix relative image paths to absolute URLs
       html = html.replace(/src="\/assets\//g, `src="${SITE.website}/assets/`);
       html = html.replace(/src="\.\.\//g, `src="${SITE.website}/`);
@@ -26,7 +36,7 @@ export async function GET() {
       const cleanHtml = sanitizeHtml(html, {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
         allowedAttributes: {
-          img: ["src", "alt", "width", "height"],
+          img: ["src", "alt", "width", "height", "style"],
         },
       });
 
