@@ -31,7 +31,7 @@ tags:
 - Open Source
 ---
 
-It’s been a little over two years since my last blog post about my privacy and digital security journey, which you can find [here](/blog/my-privacy-and-digital-security-journey...-so-far-/). A lot has changed and evolved in that time, so I figured it’s time for an update.
+It’s been a little over two years since my last blog post about my privacy and digital security journey, which you can find [here](/blog/my-privacy-and-digital-security-journey-so-far-). A lot has changed and evolved in that time, so I figured it’s time for an update.
 
 ### Hardware Updates
 
