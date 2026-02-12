@@ -50,17 +50,6 @@
       "source": "/blog/understanding-codebases-with-ai-gemini-workflow",
       "destination": "/blog/2025/understanding-codebases-with-ai-gemini-workflow",
       "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "^(?!(steipete\\.me|www\\.steipete\\.me|steipete\\.md|www\\.steipete\\.md|.*\\.vercel\\.app|.*\\.friendship\\.dev|.*\\.amantus\\.dev|.*\\.sweetistics\\.com)).*$"
-        }
-      ],
-      "destination": "https://matteodevenuto.com/:path*",
-      "permanent": true
     }
   ],
   "rewrites": [
