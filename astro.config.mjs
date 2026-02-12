@@ -14,19 +14,9 @@ import { remarkLazyLoadImages } from "./src/utils/remarkLazyLoadImages.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "static",
-  adapter: vercel({
-    edgeMiddleware: false,
-    imageService: false,
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+  output: "server",
+  adapter: vercel(),
   site: SITE.website,
-  trailingSlash: "never",
-  build: {
-    format: "file",
-  },
   markdown: {
     remarkPlugins: [
       remarkToc,
