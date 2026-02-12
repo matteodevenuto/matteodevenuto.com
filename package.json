@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
-    "build:check": "astro check && astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist/client && cp -r dist/client/pagefind .vercel/output/static/",
+    "build:check": "astro check && astro build && pagefind --site dist/client && cp -r dist/client/pagefind .vercel/output/static/",
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "scripts/deploy.sh",
