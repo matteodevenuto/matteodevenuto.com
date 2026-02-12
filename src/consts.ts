@@ -36,7 +36,7 @@ export const SITE: Site = {
   profile: "https://matteodevenuto.com/about",
   desc: "Trader and Ambassador at Falcon FX | Passionate about markets, programming, technology and much more.",
   title: "Matteo De Venuto",
-  ogImage: "avatar.jpg",
+  ogImage: "/avatar.png",
   lightAndDarkMode: true,
   postPerIndex: 10,
   postPerPage: 10,
