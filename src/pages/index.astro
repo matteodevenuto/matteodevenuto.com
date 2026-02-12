@@ -99,6 +99,18 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured).slice(0, 2)
 </Layout>
 
 <script>
+  // Store back URL when clicking on blog post links from the main page
+  document.addEventListener('DOMContentLoaded', () => {
+    const blogLinks = document.querySelectorAll('a[href^="/blog/"]');
+    blogLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        sessionStorage.setItem('backUrl', '/');
+      });
+    });
+  });
+</script>
+
+<script>
   document.addEventListener("astro:page-load", () => {
     const indexLayout = (document.querySelector("#main-content") as HTMLElement)
       ?.dataset?.layout;

@@ -82,10 +82,20 @@ const months = [
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    const mainContent = document.querySelector("#main-content");
+    const mainContent = document.querySelector("#main-content") as HTMLElement;
     const backUrl = mainContent?.dataset?.backurl;
     if (backUrl) {
       sessionStorage.setItem("backUrl", backUrl);
     }
+  });
+
+  // Store back URL when clicking on blog post links from the blog index page
+  document.addEventListener('DOMContentLoaded', () => {
+    const blogLinks = document.querySelectorAll('a[href^="/blog/"]');
+    blogLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        sessionStorage.setItem('backUrl', '/blog');
+      });
+    });
   });
 </script>

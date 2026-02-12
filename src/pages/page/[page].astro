@@ -111,3 +111,17 @@ const { data: posts, currentPage, lastPage } = page;
     </div>
   </section>
 </Layout>
+
+<script>
+  // Store back URL when clicking on blog post links from pagination pages
+  document.addEventListener('DOMContentLoaded', () => {
+    const blogLinks = document.querySelectorAll('a[href^="/blog/"]');
+    blogLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Determine the current page URL to go back to
+        const currentPage = window.location.pathname;
+        sessionStorage.setItem('backUrl', currentPage);
+      });
+    });
+  });
+</script>

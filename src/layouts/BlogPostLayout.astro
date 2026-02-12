@@ -326,6 +326,22 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
   // Run the embed processing
   document.addEventListener("DOMContentLoaded", processEmbeds);
   document.addEventListener("astro:page-load", processEmbeds);
+
+  // Update back button URL to go back to where the user came from
+  function updateGoBackUrl() {
+    const backButton: HTMLAnchorElement | null =
+      document.querySelector("#back-button");
+
+    const backUrl = sessionStorage.getItem("backUrl");
+
+    if (backUrl && backButton) {
+      backButton.href = backUrl;
+    }
+  }
+
+  document.addEventListener("astro:page-load", updateGoBackUrl);
+  document.addEventListener("DOMContentLoaded", updateGoBackUrl);
+  updateGoBackUrl();
   
   // Ensure Twitter widgets are initialized on mobile
   // Mobile browsers may need extra time for the external script to load
