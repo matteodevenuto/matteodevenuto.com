@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PostDetails from "@/layouts/PostDetails.astro";
 import { getPath } from "@/utils/getPath";
 import getSortedPosts from "@/utils/getSortedPosts";
@@ -25,19 +25,44 @@ export async function getStaticPaths() {
   return [...postResult, ...unlistedResult];
 }
 
-let { post } = Astro.props;
+let post = Astro.props.post as CollectionEntry<"blog"> | undefined;
+const slug = Astro.params.slug;
 
-// Fallback for development mode: if post not found, try to find it by matching slug
-if (!post && import.meta.env.DEV) {
+// In server mode, getStaticPaths is ignored, so we need to look up the post dynamically
+if (!post && slug) {
   const allPosts = await getCollection("blog");
-  const slug = Astro.params.slug;
   
-  post = allPosts.find((p) => {
+  const foundPost = allPosts.find((p) => {
     const postSlug = getPath(p.id, p.filePath, false);
     // Remove leading slash for comparison
     const normalizedPostSlug = postSlug.replace(/^\//, '');
-    return normalizedPostSlug === slug;
+    
+    // Handle various URL encoding scenarios
+    let comparisonSlugs = [slug];
+    
+    // Try decoded versions
+    try {
+      comparisonSlugs.push(decodeURIComponent(slug));
+      comparisonSlugs.push(decodeURI(slug));
+    } catch (e) {
+      // Ignore decode errors
+    }
+    
+    // Handle double dash normalization that might happen in URL processing
+    comparisonSlugs.push(slug.replace(/---/g, '--'));
+    comparisonSlugs.push(slug.replace(/--/g, '-'));
+    
+    return comparisonSlugs.includes(normalizedPostSlug);
   });
+  
+  if (foundPost) {
+    post = foundPost;
+  }
+}
+
+// Return 404 if post not found
+if (!post) {
+  return new Response(null, { status: 404 });
 }
 
 const posts = await getCollection("blog");
