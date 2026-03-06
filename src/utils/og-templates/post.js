@@ -213,7 +213,7 @@ export default async (post) => {
                             type: "span",
                             props: {
                               style: { overflow: "hidden", fontWeight: "bold" },
-                              children: "matteodevenuto.me",
+                              children: "matteodevenuto.com",
                             },
                           },
                         ],
@@ -231,7 +231,9 @@ export default async (post) => {
       width: 1200,
       height: 630,
       embedFont: true,
-      fonts: await loadGoogleFonts(post.data.title + post.data.author + "matteodevenuto.me" + "by"),
+      fonts: await loadGoogleFonts(
+        post.data.title + post.data.author + "matteodevenuto.com" + "by"
+      ),
     }
   );
 };

@@ -378,14 +378,30 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
   }
   setupKeyboardNavigation();
 
+  /** Initialize Twitter widgets */
+  function initializeTwitterWidgets() {
+    if (window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load();
+    } else {
+      window.addEventListener('load', () => {
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.load();
+        }
+      });
+    }
+  }
+
   /** Process YouTube and Twitter embeds */
   function processEmbeds() {
     const article = document.querySelector("#article");
     if (!article) return;
 
+    // Look for Twitter embeds
+    const twitterEmbedRegex = /\{% twitter (https:\/\/[^\s]+) %\}/g;
     // Look for YouTube embeds
     const youtubeEmbedRegex = /\{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %\}/g;
     
+    let foundTwitterEmbeds = false;
     let foundYoutubeEmbeds = false;
     
     // Helper to extract a YouTube video ID from various URL formats
@@ -430,7 +446,29 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
         `;
         p.replaceWith(container);
       }
+
+      // Check for Twitter shortcode in paragraph
+      const twMatch = text.match(/\{% twitter (https:\/\/[^\s]+) %\}/);
+      if (twMatch && twMatch[1]) {
+        foundTwitterEmbeds = true;
+        const tweetUrl = twMatch[1];
+        const placeholder = document.createElement("div");
+        placeholder.className = "twitter-tweet-placeholder";
+        placeholder.innerHTML = `
+          <blockquote class="twitter-tweet">
+            <a href="${tweetUrl}">${tweetUrl}</a>
+          </blockquote>
+        `;
+        p.replaceWith(placeholder);
+      }
     });
+
+    // Check for existing Twitter blockquotes (raw HTML in markdown)
+    const twitterBlockquotes = article.querySelectorAll('blockquote.twitter-tweet');
+    if (twitterBlockquotes.length > 0) {
+      foundTwitterEmbeds = true;
+      initializeTwitterWidgets();
+    }
 
     // 2) Fallback: process any remaining text nodes that still contain shortcodes
     const walker = document.createTreeWalker(
@@ -469,6 +507,17 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
           </div>`;
       });
 
+      // Process Twitter embeds
+      content = content.replace(twitterEmbedRegex, (match, url) => {
+        foundTwitterEmbeds = true;
+        hasChanges = true;
+        return `<div class="twitter-tweet-placeholder" data-tweet-url="${url}">
+            <blockquote class="twitter-tweet">
+              <a href="${url}">${url}</a>
+            </blockquote>
+          </div>`;
+      });
+
       if (hasChanges) {
         // Replace the text node with HTML content
         const tempDiv = document.createElement("div");
@@ -482,6 +531,11 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
         parent.removeChild(textNode);
       }
     });
+
+    // Initialize Twitter widgets if we found Twitter embeds
+    if (foundTwitterEmbeds) {
+      initializeTwitterWidgets();
+    }
   }
 
   // Run the embed processing
@@ -508,5 +562,9 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+  .twitter-tweet-placeholder {
+    margin: 2rem 0;
   }
 </style>
