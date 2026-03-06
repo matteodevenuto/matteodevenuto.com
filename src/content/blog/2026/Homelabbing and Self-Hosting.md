@@ -22,7 +22,7 @@ Last summer, well before the whole [OpenClaw](https://openclaw.ai/) frenzy explo
 
 At home, my main desktop already handles everything else, running [Omarchy](https://omarchy.org/) (I’ll write a full post about that setup eventually). That left the Mac Mini gathering dust most of the time. Instead of letting it sit idle, I decided to turn it into the starting point for my homelab adventure.
 
-{% twitter https://x.com/matteodevenuto/status/1966878941525766567 %}
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Trying out Omarchy ! <a href="https://twitter.com/dhh?ref_src=twsrc%5Etfw">@dhh</a> <a href="https://t.co/4R6tjT5OMB">pic.twitter.com/4R6tjT5OMB</a></p>&mdash; Matteo De Venuto (@matteodevenuto) <a href="https://twitter.com/matteodevenuto/status/1966878941525766567?ref_src=twsrc%5Etfw">September 13, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 I’ve been into open-source software and privacy-focused tools for years. Self-hosting felt like the natural next step, especially since I love tinkering with computers.
 
