@@ -33,7 +33,7 @@ if (type === "BlogPosting") {
       "@type": "WebPage",
       "@id": data.url,
     },
-    image: data.ogImage || "https://matteodevenuto.me/avatar.png",
+    image: data.ogImage || "https://matteodevenuto.com/avatar.png",
     articleSection: data.tags?.[0] || "Technology",
     keywords: data.tags?.join(", ") || "",
     wordCount: data.wordCount,
@@ -44,12 +44,11 @@ if (type === "BlogPosting") {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Matteo De Venuto",
-    url: "https://matteodevenuto.me",
-    image: "https://matteodevenuto.me/avatar.png",
+    url: "https://matteodevenuto.com",
+    image: "https://matteodevenuto.com/avatar.png",
     sameAs: [
       "https://github.com/matteodevenuto",
       "https://twitter.com/matteodevenuto",
-      "https://bsky.app/profile/matteodevenuto.me",
     ],
     jobTitle: "Software Engineer",
     description:
@@ -60,7 +59,7 @@ if (type === "BlogPosting") {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Matteo De Venuto",
-    url: "https://matteodevenuto.me",
+    url: "https://matteodevenuto.com",
     description:
       "Trader and Ambassador at Falcon FX | Passionate about markets, programming, technology and much more.",
     author: {
@@ -69,7 +68,7 @@ if (type === "BlogPosting") {
     },
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://matteodevenuto.me/search?q={search_term_string}",
+      target: "https://matteodevenuto.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
