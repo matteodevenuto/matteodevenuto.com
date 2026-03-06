@@ -12,7 +12,7 @@ tags:
 - Tailscale
 - Pi-hole
 - Raspberry Pi
-- Mac Mini
+
 - Self-hosting
 - Ad Blocking
 - Network-wide Ad Blocking
@@ -33,7 +33,7 @@ I kicked things off with a media server using [Jellyfin](https://jellyfin.org/),
 
 Over time, I experimented with different setups: various reverse proxies, domain configurations, the usual self-hosting rabbit hole. But I never loved the idea of exposing everything directly to the open internet. Security concerns always nagged at me.
 
-<img src="/assets/img/2026/homelabbing-and-self-hosting/tailscale.svg">
+<img src="/assets/img/2026/homelabbing-and-self-hosting/tailscale.png">
 
 Recently, I integrated [Tailscale](https://tailscale.com/), and it's a game-changer. It instantly made everything more secure without complicated port forwarding or firewall gymnastics. Now I can access my Jellyfin library (and everything else) from anywhere, on any device, with zero exposure to the public web. The experience feels seamless and private, which is exactly what I wanted.
 
