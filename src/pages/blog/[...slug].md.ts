@@ -5,7 +5,7 @@ import type { APIRoute } from "astro";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const posts = await getCollection("blog", ({ data }) => !data.draft || import.meta.env.DEV);
 
   return posts.map((post) => ({
     params: { slug: post.id },

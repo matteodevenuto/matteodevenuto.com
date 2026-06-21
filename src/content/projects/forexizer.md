@@ -43,6 +43,8 @@ Forexizer eliminates these pain points with an intuitive mobile interface that:
 - **History Tracking**: Keep track of your position sizing calculations
 - **Customizable Parameters**: Adjust risk percentages, stop losses, and account details
 - **Quick Access**: Favorite instruments for rapid calculations during trading
+- **Premium Subscription Tier**: Unlocks additional accounts and features for active traders
+- **Customer Center**: Manage your subscription directly from Settings
 
 ## 🛠 Technical Implementation
 
@@ -65,11 +67,15 @@ Forexizer eliminates these pain points with an intuitive mobile interface that:
 ## 📊 User Metrics
 
 ### **Adoption**
-- **Hundreds of active users** across iOS and Android platforms
-- **Tens of paying subscribers** with premium feature access
+- **700+ downloads** across iOS and Android platforms
+- **Premium subscribers** with access to additional accounts and features
 
 ## 🔮 Development Roadmap
 
 ### **Planned Enhancements**
+- [ ] **Account sync with new or secondary device** (Sync & Transfer)
+- [ ] **Redesigned Settings screen** with grouped sections and icons
+- [ ] **Refreshed UI**: Polished interface and visual design across the entire app
+- [ ] **More efficient exchange-rate requests** when running multiple accounts
+- [ ] **Improved subscription status handling** to prevent accounts being incorrectly flagged for deactivation
 - [ ] **Secondary Risk Parameter for accounts**
-- [ ] **Account sync with new or secondary device**
