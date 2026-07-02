@@ -8,7 +8,7 @@ websiteUrl: "https://forexizer.app"
 videoDemo: "https://www.youtube.com/watch?v=URG3n68VCOc"
 githubUrl: ""
 pubDatetime: 2024-02-26
-technologies: ["React Native", "Expo", "Node.js", "Express", "RevenueCat", "MongoDB", "Railway"]
+technologies: ["React Native", "Expo", "Node.js", "Express", "RevenueCat", "MongoDB", "Railway", "macOS"]
 status: "ongoing"
 ---
 
@@ -45,6 +45,8 @@ Forexizer eliminates these pain points with an intuitive mobile interface that:
 - **Quick Access**: Favorite instruments for rapid calculations during trading
 - **Premium Subscription Tier**: Unlocks additional accounts and features for active traders
 - **Customer Center**: Manage your subscription directly from Settings
+- **Sync & Transfer**: Move accounts, history, and preferences between devices with no manual re-entry
+- **macOS Support**: Available on M-series Macs via the Mac App Store, synced with your phone via Sync & Transfer
 
 ## 🛠 Technical Implementation
 
@@ -67,15 +69,19 @@ Forexizer eliminates these pain points with an intuitive mobile interface that:
 ## 📊 User Metrics
 
 ### **Adoption**
-- **700+ downloads** across iOS and Android platforms
+- **700+ downloads** across iOS, Android, and macOS platforms
 - **Premium subscribers** with access to additional accounts and features
 
 ## 🔮 Development Roadmap
 
+### **Shipped in 1.6**
+- [x] **Sync & Transfer**: Move accounts, history, and preferences to any device
+- [x] **macOS support**: Available on M-series Macs via the Mac App Store
+- [x] **Redesigned UI**: Every screen rebuilt for a cleaner, more consistent look
+- [x] **Fixed subscription lock bug**: App now waits for confirmed status before making any account changes
+- [x] **Expo SDK 54 upgrade**: Compatibility with Xcode 26 and the latest iOS and Android releases
+- [x] **More efficient exchange-rate requests** when running multiple accounts
+- [x] **Discord community link** added in Settings
+
 ### **Planned Enhancements**
-- [ ] **Account sync with new or secondary device** (Sync & Transfer)
-- [ ] **Redesigned Settings screen** with grouped sections and icons
-- [ ] **Refreshed UI**: Polished interface and visual design across the entire app
-- [ ] **More efficient exchange-rate requests** when running multiple accounts
-- [ ] **Improved subscription status handling** to prevent accounts being incorrectly flagged for deactivation
 - [ ] **Secondary Risk Parameter for accounts**
