@@ -4,6 +4,11 @@ This document contains important instructions and notes for Claude when working 
 
 ## CRITICAL GUIDELINES
 
+### NO EM DASHES IN WRITTEN CONTENT
+
+- **NEVER USE EM DASHES (—)** in blog posts, project pages, or any written content
+- Use commas, colons, parentheses, or restructure the sentence instead
+
 ### NEVER CREATE BLOG POSTS WITHOUT CONSENT
 
 - **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from steipete
