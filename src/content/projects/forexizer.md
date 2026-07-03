@@ -42,7 +42,6 @@ Forexizer eliminates these pain points with an intuitive mobile interface that:
 - **Pip Value Calculation**: Built-in pip value calculator for precise risk management
 - **History Tracking**: Keep track of your position sizing calculations
 - **Customizable Parameters**: Adjust risk percentages, stop losses, and account details
-- **Quick Access**: Favorite instruments for rapid calculations during trading
 - **Premium Subscription Tier**: Unlocks additional accounts and features for active traders
 - **Customer Center**: Manage your subscription directly from Settings
 - **Sync & Transfer**: Move accounts, history, and preferences between devices with no manual re-entry
