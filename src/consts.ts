@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://matteodevenuto.com/",
   author: "Matteo De Venuto",
   profile: "https://matteodevenuto.com/about",
-  desc: "Trader and Ambassador at Falcon FX | Passionate about markets, programming, technology and much more.",
+  desc: "Forex Trader at Falcon FX, building trading tools at Forexizer.",
   title: "Matteo De Venuto",
   ogImage: "/avatar.png",
   lightAndDarkMode: true,
