@@ -13,7 +13,7 @@ tags:
 ---
 
 When people picture an app that needs "live exchange rates" for calculations, they usually imagine the app calling an exchange-rate API every time you press "calculate".
-It's also what would have forced **Forexizer** (the position
+It's also what would have forced [**Forexizer**](https://forexizer.app) (the position
 size calculator I built) onto a more expensive API plan.
 
 Here's the architecture I used instead:
