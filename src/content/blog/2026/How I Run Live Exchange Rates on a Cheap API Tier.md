@@ -38,6 +38,8 @@ Concretely:
 2. That's *the only code in the entire system* that calls the external API.
 3. The mobile app, on every calculation, reads rates **from my database**, never from the third party.
 
+A cross is both directions of a pair. EURUSD and USDEUR are two different rates. One request with EUR as the base comes back with EUR vs every other currency I care about (EURUSD, EURGBP, EURJPY, and so on). The next request does the same with USD as the base (USDEUR, USDGBP, USDJPY, ...). Nine of those requests fill the whole grid: 81 rates, 9 calls.
+
 The numbers work out because the API bills per request, not per rate. Nine hourly calls land around **~6,500 requests a month**, comfortably under the 15,000 ceiling, with headroom to add currencies or tighten the interval later.
 
 And crucially, that cost is now **completely flat**. Whether I have 10 users or 100,000, the API bill doesn't move, because user traffic and API traffic are fully decoupled.
