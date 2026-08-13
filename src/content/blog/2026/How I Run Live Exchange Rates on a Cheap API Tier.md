@@ -24,7 +24,7 @@ Exchange-rate APIs charge by request volume, and the jump from the entry tiers t
 
 The naive design makes that impossible. Do the math on *per-user, per-open* calls: a few hundred users opening the app to calculate their position sizes x times a month, each calculation across multiple currency pairs, and you blow through a month's quota very quickly. After that you're either staring at errors or forced onto a pricier plan to paper over an architecture problem.
 
-So the real design question was never "how do I fetch rates?" It was: **how do I decouple how often users need rates from how often I pay to fetch them?**
+So the real design question was never "how do I fetch rates?" It was: **how do I decouple how often users need rates from how often I fetch them?**
 
 ## The decision: the app never touches the rate API
 
