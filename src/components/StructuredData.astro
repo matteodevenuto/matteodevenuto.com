@@ -17,7 +17,7 @@ if (type === "BlogPosting") {
     author: {
       "@type": "Person",
       name: data.author || "Matteo De Venuto",
-      url: "https://matteodevenuto.me/about",
+      url: "https://matteodevenuto.com/about",
     },
     datePublished: data.pubDatetime.toISOString(),
     dateModified: data.modDatetime?.toISOString() || data.pubDatetime.toISOString(),
@@ -26,7 +26,7 @@ if (type === "BlogPosting") {
       name: "Matteo De Venuto",
       logo: {
         "@type": "ImageObject",
-        url: "https://matteodevenuto.me/avatar.png",
+        url: "https://matteodevenuto.com/avatar.png",
       },
     },
     mainEntityOfPage: {

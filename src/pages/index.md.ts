@@ -20,7 +20,7 @@ Trader and Ambassador at Falcon FX | Passionate about markets, programming, tech
 
 ---
 
-*This is the markdown-only version of matteodevenuto.me. Visit [matteodevenuto.me](https://matteodevenuto.me) for the full experience.*`;
+*This is the markdown-only version of matteodevenuto.com. Visit [matteodevenuto.com](https://matteodevenuto.com) for the full experience.*`;
 
   return new Response(markdownContent, {
     status: 200,

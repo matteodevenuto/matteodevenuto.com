@@ -7,7 +7,7 @@ import loadGoogleFonts from "../loadGoogleFont";
  *
  * This template generates social media preview cards for blog posts.
  *
- * CUSTOMIZATION: We override the default behavior to show "matteodevenuto.me"
+ * CUSTOMIZATION: We override the default behavior to show "matteodevenuto.com"
  * on the right side instead of the author name (Matteo De Venuto).
  * This avoids redundancy since the author name already appears on the left
  * with "by Matteo De Venuto".
