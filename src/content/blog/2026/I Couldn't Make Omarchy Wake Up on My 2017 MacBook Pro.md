@@ -90,3 +90,12 @@ pcie_ports=compat mem_sleep_default=s2idle
 Later lid-close tests resumed successfully. The remaining cost was visible: the fans could continue running, showing that the laptop had not reached the low-power behavior I expected from S3. My operating rule became straightforward: use `s2idle` to preserve a session at a desk, and shut the laptop down before storing or transporting it.
 
 I also investigated forcing Intel-only graphics with `apple-gmux force_igd=y` and blacklisting `amdgpu`. I did not test it. A mistake could leave the internal display unusable, and losing the Radeon was a larger tradeoff than I wanted for this machine.
+
+## A bounded conclusion is still useful
+
+I did not repair deep sleep, and the logs do not support a single-device diagnosis. They do support four narrower conclusions:
+
+- Deep S3 was unreliable on this hardware and kernel configuration
+- The Radeon failed during resume, but Thunderbolt and xHCI failed too
+- Correcting a genuine PCI-address mistake did not solve the broader problem
+- Persistent `s2idle` made resume usable, but the fans could keep running
