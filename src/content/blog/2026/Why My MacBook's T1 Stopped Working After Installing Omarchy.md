@@ -2,7 +2,7 @@
 title: "Why My MacBook's T1 Stopped Working After Installing Omarchy"
 pubDatetime: 2026-09-15T08:30:00.000+02:00
 draft: false
-heroImage: /assets/img/2026/reinstalling-macos-brought-my-t1-macbook-back/header.jpg
+heroImage: /assets/img/2026/why-my-macbooks-t1-stopped-working-after-installing-omarchy/header.jpg
 description: "A Linux installation exposed a hidden dependency between Apple's T1 chip and firmware stored on the EFI System Partition."
 tags:
   - Linux
