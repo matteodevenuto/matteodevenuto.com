@@ -73,7 +73,10 @@ if (!post) {
   return new Response(null, { status: 404 });
 }
 
-const posts = await getCollection("blog");
+const posts = await getCollection(
+  "blog",
+  ({ data }) => !data.draft && !data.unlisted
+);
 const sortedPosts = getSortedPosts(posts);
 ---
 
