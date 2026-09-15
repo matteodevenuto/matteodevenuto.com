@@ -1,5 +1,5 @@
 ---
-title: "Reinstalling macOS Brought My T1 MacBook Back"
+title: "Why My MacBook's T1 Stopped Working After Installing Omarchy"
 pubDatetime: 2026-09-15T08:30:00.000+02:00
 draft: false
 heroImage: /assets/img/2026/reinstalling-macos-brought-my-t1-macbook-back/header.jpg
