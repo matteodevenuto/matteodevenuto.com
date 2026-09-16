@@ -41,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
         headers,
         body: JSON.stringify({
           unsubscribed: false,
-          ...(name && { properties: { first_name: name } }),
+          ...(name && { first_name: name }),
         }),
       });
 
@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
           email,
           unsubscribed: false,
           segments: [{ id: segmentId }],
-          ...(name && { properties: { first_name: name } }),
+          ...(name && { first_name: name }),
         }),
       });
     } else {
