@@ -140,10 +140,10 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
           data-slug={viewCountSlug}
           role="status"
           aria-atomic="true"
-          class="hidden items-center gap-3"
+          class="inline-flex items-center gap-3"
         >
           <span class="text-foreground/30">•</span>
-          <span data-view-count-value class="text-sm text-foreground/60 tabular-nums"></span>
+          <span data-view-count-value class="text-sm text-foreground/60 tabular-nums">… views</span>
         </span>
       </div>
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
@@ -250,9 +250,8 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
       value.textContent = `${new Intl.NumberFormat().format(data.views)} ${
         data.views === 1 ? "view" : "views"
       }`;
-      element.classList.replace("hidden", "inline-flex");
     } catch {
-      element.remove();
+      return;
     }
   }
 

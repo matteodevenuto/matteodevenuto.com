@@ -4,11 +4,11 @@ import { getPath } from "@/utils/getPath";
 
 export const prerender = false;
 
-const json = (body: object, status: number) =>
+const json = (body: object, status: number, cacheControl = "no-store") =>
   new Response(JSON.stringify(body), {
     status,
     headers: {
-      "Cache-Control": "no-store",
+      "Cache-Control": cacheControl,
       "Content-Type": "application/json",
     },
   });
@@ -52,7 +52,11 @@ const views: APIRoute = async ({ params, request }) => {
       return json({ error: "View counter failed" }, 502);
     }
 
-    return json({ views: count }, 200);
+    return json(
+      { views: count },
+      200,
+      request.method === "GET" ? "public, s-maxage=60, stale-while-revalidate=300" : "no-store"
+    );
   } catch {
     return json({ error: "View counter failed" }, 502);
   }

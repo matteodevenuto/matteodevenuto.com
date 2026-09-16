@@ -45,8 +45,8 @@ const headerProps = {
         data-slug={viewCountSlug}
         role="status"
         aria-atomic="true"
-        class="hidden text-sm italic opacity-80 tabular-nums"
-      ></span>
+        class="text-sm italic opacity-80 tabular-nums"
+      >• … views</span>
     </div>
     <div class="flex gap-4 items-start">
       {showImage && heroImage && (
@@ -93,9 +93,8 @@ const headerProps = {
           element.textContent = `• ${new Intl.NumberFormat().format(data.views)} ${
             data.views === 1 ? "view" : "views"
           }`;
-          element.classList.remove("hidden");
         } catch {
-          element.remove();
+          return;
         }
       }),
     );
