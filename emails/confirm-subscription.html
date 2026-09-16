@@ -3,25 +3,24 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{POST_TITLE}}</title>
+    <title>Confirm your email</title>
     <style>
       @font-face { font-family: Atkinson; src: url("https://matteodevenuto.com/fonts/atkinson-regular.woff") format("woff"); font-weight: 400; }
       @font-face { font-family: Atkinson; src: url("https://matteodevenuto.com/fonts/atkinson-bold.woff") format("woff"); font-weight: 700; }
-      pre code { color:#282728 !important; background:transparent !important; padding:0 !important; }
       @media (max-width: 540px) {
         .email-card { padding:32px 22px !important; }
-        .email-title { font-size:29px !important; }
+        .email-title { font-size:28px !important; }
       }
     </style>
   </head>
   <body style="margin:0;background:#f3f5fa;color:#282728;font-family:Atkinson,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif">
     <div style="display:none;max-height:0;overflow:hidden;opacity:0">
-      {{POST_DESCRIPTION}}
+      One click confirms your subscription to Matteo De Venuto's posts.
     </div>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f5fa">
       <tr>
         <td align="center" style="padding:36px 14px">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px">
             <tr>
               <td style="padding:0 4px 22px">
                 <a href="https://matteodevenuto.com" style="color:#282728;text-decoration:none;font-size:18px;font-weight:700">
@@ -32,40 +31,34 @@
             <tr>
               <td class="email-card" style="background:#fdfdfd;border:1px solid #e6e6e6;border-top:4px solid #5181fb;border-radius:10px;padding:44px 46px">
                 <p style="margin:0 0 28px;color:#56545a;font-size:16px;line-height:1.6">
-                  Hi {{{contact.first_name|there}}},
+                  Hi {{SUBSCRIBER_NAME}},
                 </p>
                 <p style="margin:0 0 12px;color:#5181fb;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">
-                  New post
+                  One last step
                 </p>
-                <h1 class="email-title" style="margin:0 0 16px;color:#5181fb;font-size:34px;line-height:1.16;letter-spacing:-.02em">
-                  {{POST_TITLE}}
+                <h1 class="email-title" style="margin:0 0 18px;color:#5181fb;font-size:32px;line-height:1.2;letter-spacing:-.02em">
+                  Confirm your email
                 </h1>
-                <p style="margin:0 0 32px;color:#56545a;font-size:18px;line-height:1.65">
-                  {{POST_DESCRIPTION}}
+                <p style="margin:0 0 30px;color:#56545a;font-size:17px;line-height:1.7">
+                  Click below to confirm that you want new posts delivered to your inbox.
                 </p>
-                {{POST_HERO}}
-                <div style="color:#282728;font-size:17px;line-height:1.75">
-                  {{POST_CONTENT}}
-                </div>
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:38px;border-top:1px dashed #5181fb">
+                <table role="presentation" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td style="padding-top:28px">
-                      <a href="{{POST_URL}}" style="display:inline-block;padding:13px 20px;border-radius:6px;background:#5181fb;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700">
-                        Read on the blog &rarr;
+                    <td style="border-radius:6px;background:#5181fb">
+                      <a href="{{CONFIRM_URL}}" style="display:inline-block;padding:14px 22px;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700">
+                        Confirm my email
                       </a>
                     </td>
                   </tr>
                 </table>
+                <p style="margin:28px 0 0;color:#68676c;font-size:13px;line-height:1.6">
+                  This link expires in 24 hours. If you did not request this, you can ignore this email.
+                </p>
               </td>
             </tr>
             <tr>
               <td style="padding:24px 4px;color:#68676c;font-size:12px;line-height:1.6">
-                <p style="margin:0 0 8px">
-                  You received this because you subscribed at matteodevenuto.com.
-                </p>
-                <p style="margin:0">
-                  <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#5181fb">Unsubscribe</a>
-                </p>
+                Sent because this address was entered at matteodevenuto.com.
               </td>
             </tr>
           </table>
