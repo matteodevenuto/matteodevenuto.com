@@ -12,10 +12,7 @@ if (!SITE.showArchives) {
   return Astro.redirect("/404");
 }
 
-const posts = await getCollection(
-  "blog",
-  ({ data }) => !data.draft || import.meta.env.DEV
-);
+const posts = await getCollection("blog", ({ data }) => !data.draft || import.meta.env.DEV);
 
 const months = [
   "January",
