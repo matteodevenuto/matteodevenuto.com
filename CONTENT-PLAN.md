@@ -49,6 +49,16 @@ LinkedIn shorts for all four live in the app repo at
    why the simulator can't test purchases, physical-device + sandbox Apple ID.
 6. **The pure-function trick for dangerous UI logic** — generalize the gating fix
    into a reusable pattern post.
+7. **I caught myself cloning my competitors, so I threw it out and started over**:
+   building a new app, I realised I was just replicating competitor features. The
+   question that stopped me: why would anyone pick mine over products that are more
+   polished, have more features, and have whole teams behind them? Answer: they
+   wouldn't. So I revamped everything (new interface, cut the features that were
+   there only because rivals had them) and built something actually different.
+   Angle: differentiation as an engineering decision, not a marketing one, and why
+   feature parity is a losing game for a solo dev.
+8. **I couldn't make Omarchy wake up on my 2017 MacBook Pro** — draft written.
+9. **Reinstalling macOS brought my T1 MacBook back** — draft written.
 
 > One idea ships per week. Pull the top item, draft, review, publish, post the
 > LinkedIn short, move it to the status board.

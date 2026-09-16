@@ -1,9 +1,9 @@
 ---
-title: "I Ran My Dev App Against the Production Database — On Purpose. Then I Stopped."
+title: "I Ran My Dev App Against Production on Purpose. Then I Stopped."
 pubDatetime: 2026-06-29T09:00:00.000+02:00
 draft: true
 heroImage: /assets/img/2026/i-ran-my-dev-app-against-production-on-purpose/header.jpg
-description: "When skipping the 'right' setup is the right call, and how you know it's time to graduate."
+description: "Forexizer began as a personal tool with one database, gained local development before release, and added staging when direct releases stopped being enough."
 tags:
 - Expo
 - React Native
@@ -12,88 +12,63 @@ tags:
 - Indie Development
 ---
 
-There's a version of this post where I confess to a horrifying mistake: my
-development build was secretly talking to the production database and I didn't
-notice. That post would get more clicks.
+I didn't start [Forexizer](https://forexizer.app) as a product. I started it as a tool for myself while learning how to build a mobile app. There was no team, release plan, or customer data. There was one developer and one user, both me.
 
-It also wouldn't be true. With **Forexizer** — the position size calculator I
-build and run solo — my dev app pointed at the production backend because *I pointed it there, on
-purpose*. For a long stretch, that was the correct decision. This is the more
-honest, and I think more useful, story: when to skip the "proper" setup, and how to
-tell when you've outgrown the shortcut.
+My development build connected to the production database because it was the only database. That choice helped me learn and test the idea without building infrastructure for a product that might never exist. Once I prepared Forexizer for other people, I added a local development server and database. Staging came much later.
 
-## The shortcut, and why it was rational
+## It started as a personal tool
 
-The textbook setup is a fully separate development environment: a local backend, a
-local database, seed data, the works. It's good hygiene. It's also *work* — work to
-build, and friction every single day to spin up before I can change a single line.
+Forexizer began with a narrow goal: make my own position-size calculations less tedious. I needed to learn whether the workflow worked before worrying about how to operate it for other people.
 
-So I made a deliberate trade. Forexizer didn't have a separate dev environment, and
-I didn't want to stand up and babysit a local server and database just to iterate.
-I had a handful of users, I knew the data cold, and I wanted to **move fast**. So
-dev talked straight to the production database.
+So I kept the setup small. The app, backend, and database formed one working path. I could change the app, use it myself, and find the next problem without maintaining local data, seed scripts, staging configuration, and another set of secrets.
 
-Was that "best practice"? No. Was it the right call *for that stage*? Honestly,
-yes. The cost of building isolation up front would have bought me almost nothing
-while the app was tiny, and it would have slowed down the part that actually
-mattered then: shipping features and finding out if anyone cared.
+Calling it a production database sounds more dramatic than it was at that point. The database was deployed, but it held my data for a tool I had built for myself. If I broke something, I affected my own workflow.
 
-Pretending otherwise — adding ceremony a one-person, few-user project doesn't need —
-is its own kind of engineering immaturity. Knowing which corners are safe to cut,
-and for how long, is a senior skill, not a junior one.
+That distinction mattered. I wasn't accepting risk on behalf of customers to save time. I was accepting my own risk while testing whether the idea deserved more investment.
 
-## Where the shortcut stops being smart
+## Other people changed the requirements
 
-The thing about a deliberate shortcut is that it has an expiry date, and it won't
-tell you when it's reached it. The risks that were negligible at five users stop
-being negligible:
+The turning point wasn't a technical failure. Forexizer worked for me, and other traders began asking if they could use it too.
 
-- A clumsy dev query now touches **real people's** data.
-- There's no safe place to test something destructive — every experiment is live.
-- "I know the data cold" stops being true the moment there's more data than I can
-  hold in my head.
-- Onboarding anyone else, or running anything automated, becomes dangerous by
-  default.
+That interest was the first useful product signal. It also changed the job. I was no longer building a tool around data I understood and controlled. Releasing it meant storing other people's data and making changes without disrupting their use of the app.
 
-None of these are hypothetical forever. They sharpen as the app grows, and the
-trade that was clearly positive quietly flips to clearly negative.
+The original setup had done its job. It helped me learn, build, and validate the workflow. Before release, I gave local development its own backend and database. Development mistakes could no longer touch customer data.
 
-## Graduating — deliberately, not in a panic
+## From local development straight to production
 
-So I set up the thing I'd skipped: a proper environment separation, on my terms,
-*before* it became a fire. Forexizer now runs distinct environments —
+For a long time, Forexizer had two environments:
 
-| How I run it           | Talks to       |
-| ---------------------- | -------------- |
-| local dev              | local backend  |
-| preview / staging build| staging backend|
-| production build       | production     |
+| Runtime | Backend |
+| --- | --- |
+| Local development | Local backend |
+| Production builds | Production backend |
 
-— each deriving its backend target from a single, documented source of truth, so a
-build can never *accidentally* hit the wrong one. The shortcut is gone, replaced
-by a workflow that's actually pleasant to work in. (Env config has its own sharp
-edges — file precedence rules that will happily override your settings without
-telling you — but that's a tale for another post.)
+That separation protected customer data during development, but there was no staging step. Once a change worked locally, I released it to production.
 
-## The transferable lesson
+For a solo developer, that flow stayed manageable for a while. It had fewer environments to maintain and no staging data to keep useful. The tradeoff was that local testing was my last check before a real release.
 
-The lesson isn't "always set up separate environments" — that's the cargo-cult
-version, and following it blindly at five users would've been a waste. The real
-lesson is two-sided:
+## Why I added staging
 
-- **Cut corners deliberately, not accidentally.** A shortcut you *chose*, understand,
-  and can articulate the risk of is engineering judgment. The same shortcut you
-  drifted into and forgot about is a liability. The difference is entirely whether
-  you're tracking it.
-- **Invest in process when the math flips — and ideally just before.** Tooling and
-  isolation have a real cost; pay it when the risk they prevent starts to outweigh
-  it, not on day one out of habit, and not after the incident that makes it
-  obvious.
+I added staging recently because direct releases had become the next shortcut to outgrow. Forexizer now has three explicit paths:
 
-Good engineering at a tiny scale and good engineering at a larger scale are not the
-same thing, and pretending they are makes you slower at both. Knowing where you are
-on that curve — and moving at the right moment — is most of the job.
+| Runtime | Backend |
+| --- | --- |
+| Local development | Local backend |
+| Preview and staging builds | Staging backend |
+| Production builds | Production backend |
 
-I make these calls across every layer of Forexizer myself: when to be scrappy, when
-to invest, and how to tell the difference. If you want a developer with judgment
-about *that*, not just someone who recites best practices, [get in touch](mailto:blog@matteodevenuto.com).
+Each environment gets its backend target from one documented source of truth. The build context selects the target, so I don't have to remember to change a URL before each release.
+
+That design matters more than the number of environments. A staging server doesn't improve safety if developers can still choose the production URL by accident. Safe behavior should come from the build configuration, not from memory.
+
+Staging gives me a disposable place to test data changes and production-shaped builds. It catches problems that a local server can't reproduce without making production the test environment.
+
+Neither change was cleanup after a bad decision. Local isolation was part of turning a personal tool into a product. Staging was a later investment in a safer release process.
+
+## Build for the stage you're in
+
+I could have built three environments on day one. I also could have spent that time polishing infrastructure around an idea that only I wanted.
+
+Starting with one database kept me focused on the uncertain part: whether Forexizer was useful. Interest from other traders answered that question and justified local isolation before release. Staging became worthwhile later, when I needed a production-like checkpoint between development and customers.
+
+The lesson I kept is to make shortcuts explicit. Know who carries the risk, decide what will end the shortcut, and act when that condition arrives. For Forexizer, the line was clear. My data was mine to risk. Other people's data wasn't.

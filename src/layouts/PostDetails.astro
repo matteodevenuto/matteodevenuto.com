@@ -60,6 +60,7 @@ const ogImage = ogImageUrl ? new URL(ogImageUrl, Astro.url.origin).href : undefi
 
 // Generate the canonical URL - always use the full path with year
 const postPath = getPath(post.id, post.filePath, true);
+const viewCountSlug = postPath.replace(/^\/blog\//, "");
 const computedCanonicalURL =
   canonicalURL ||
   (Astro.site ? new URL(postPath, Astro.site).href : new URL(postPath, Astro.url.origin).href);
@@ -134,6 +135,16 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
             </>
           )
         }
+        <span
+          data-view-count
+          data-slug={viewCountSlug}
+          role="status"
+          aria-atomic="true"
+          class="hidden items-center gap-3"
+        >
+          <span class="text-foreground/30">•</span>
+          <span data-view-count-value class="text-sm text-foreground/60 tabular-nums"></span>
+        </span>
       </div>
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
     </div>
@@ -218,6 +229,36 @@ const wordCount = (post.body ?? "").split(/\s+/).length;
   </main>
   <Footer />
 </Layout>
+
+<script>
+  async function loadViewCount() {
+    const element = document.querySelector<HTMLElement>("[data-view-count]:not([data-loaded])");
+    const value = element?.querySelector<HTMLElement>("[data-view-count-value]");
+    const slug = element?.dataset.slug;
+
+    if (!element || !value || !slug) return;
+    element.dataset.loaded = "true";
+
+    try {
+      const path = slug.split("/").map(encodeURIComponent).join("/");
+      const response = await fetch(`/api/views/${path}`, { method: "POST" });
+      if (!response.ok) throw new Error("View counter request failed");
+
+      const data = await response.json();
+      if (!Number.isInteger(data.views)) throw new Error("Invalid view count");
+
+      value.textContent = `${new Intl.NumberFormat().format(data.views)} ${
+        data.views === 1 ? "view" : "views"
+      }`;
+      element.classList.replace("hidden", "inline-flex");
+    } catch {
+      element.remove();
+    }
+  }
+
+  loadViewCount();
+  document.addEventListener("astro:page-load", loadViewCount);
+</script>
 
 <script is:inline data-astro-rerun>
   /** Create a progress indicator
