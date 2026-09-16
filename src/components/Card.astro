@@ -15,6 +15,7 @@ const { variant = "h2", data, id, filePath, body, showImage = true } = Astro.pro
 
 const { title, description, pubDatetime, modDatetime, timezone, heroImage } = data;
 const readingTime = calculateReadingTime(body ?? "");
+const viewCountSlug = getPath(id, filePath, true).replace(/^\/blog\//, "");
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -39,6 +40,13 @@ const headerProps = {
     <div class="flex items-center gap-3 mb-3">
       <Datetime {pubDatetime} {modDatetime} {timezone} />
       <span class="text-sm italic opacity-80">• {readingTime}</span>
+      <span
+        data-view-count
+        data-slug={viewCountSlug}
+        role="status"
+        aria-atomic="true"
+        class="hidden text-sm italic opacity-80 tabular-nums"
+      ></span>
     </div>
     <div class="flex gap-4 items-start">
       {showImage && heroImage && (
@@ -63,3 +71,36 @@ const headerProps = {
     </div>
   </div>
 </li>
+
+<script>
+  async function loadViewCounts() {
+    const elements = document.querySelectorAll<HTMLElement>("[data-view-count]:not([data-loaded])");
+
+    await Promise.all(
+      [...elements].map(async (element) => {
+        const slug = element.dataset.slug;
+        if (!slug) return;
+        element.dataset.loaded = "true";
+
+        try {
+          const path = slug.split("/").map(encodeURIComponent).join("/");
+          const response = await fetch(`/api/views/${path}`);
+          if (!response.ok) throw new Error("View counter request failed");
+
+          const data = await response.json();
+          if (!Number.isInteger(data.views)) throw new Error("Invalid view count");
+
+          element.textContent = `• ${new Intl.NumberFormat().format(data.views)} ${
+            data.views === 1 ? "view" : "views"
+          }`;
+          element.classList.remove("hidden");
+        } catch {
+          element.remove();
+        }
+      }),
+    );
+  }
+
+  loadViewCounts();
+  document.addEventListener("astro:page-load", loadViewCounts);
+</script>

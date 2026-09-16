@@ -13,7 +13,7 @@ const json = (body: object, status: number) =>
     },
   });
 
-export const POST: APIRoute = async ({ params }) => {
+const views: APIRoute = async ({ params, request }) => {
   const slug = params.slug?.replace(/^\/+|\/+$/g, "");
 
   if (!slug || slug.length > 240 || slug.includes("..")) {
@@ -43,16 +43,20 @@ export const POST: APIRoute = async ({ params }) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(["INCR", `blog:views:${slug}`]),
+      body: JSON.stringify([request.method === "POST" ? "INCR" : "GET", `blog:views:${slug}`]),
     });
     const data = await response.json();
+    const count = data.result === null ? 0 : Number(data.result);
 
-    if (!response.ok || !Number.isInteger(data.result)) {
+    if (!response.ok || !Number.isInteger(count) || count < 0) {
       return json({ error: "View counter failed" }, 502);
     }
 
-    return json({ views: data.result }, 200);
+    return json({ views: count }, 200);
   } catch {
     return json({ error: "View counter failed" }, 502);
   }
 };
+
+export const GET = views;
+export const POST = views;
