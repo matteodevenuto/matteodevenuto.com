@@ -77,7 +77,7 @@ const formId = `newsletter-form-${Math.random().toString(36).slice(2)}`;
 
       if (response.ok) {
         messageEl.className = 'mt-3 text-sm text-gray-600 dark:text-gray-400';
-        messageEl.textContent = 'Success! Please check your email to confirm your subscription.';
+        messageEl.textContent = 'Success! You are subscribed.';
         form.reset();
       } else {
         messageEl.className = 'mt-3 text-sm text-gray-600 dark:text-gray-400';

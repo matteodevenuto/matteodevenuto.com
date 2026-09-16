@@ -2,88 +2,77 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
+const json = (body: object, status: number) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+
 export const POST: APIRoute = async ({ request }) => {
-  let email: string | null = null;
-  let name: string | null = null;
+  const data = await request.formData().catch(() => null);
+  const email = data?.get("email")?.toString().trim().toLowerCase();
+  const name = data?.get("name")?.toString().trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json({ error: "A valid email is required" }, 400);
+  }
+
+  const apiKey = import.meta.env.RESEND_API_KEY;
+  const segmentId = import.meta.env.RESEND_SEGMENT_ID;
+
+  if (!apiKey || !segmentId) {
+    return json({ error: "Newsletter is not configured" }, 500);
+  }
+
+  const headers = {
+    Authorization: `Bearer ${apiKey}`,
+    "Content-Type": "application/json",
+    "User-Agent": "matteodevenuto.com",
+  };
+  const contactUrl = `https://api.resend.com/contacts/${encodeURIComponent(email)}`;
 
   try {
-    const data = await request.formData();
-    email = data.get("email") as string | null;
-    name = data.get("name") as string | null;
-  } catch (e) {
-    // Fallback: try to parse as text and extract form data manually
-    const text = await request.text();
-    const params = new URLSearchParams(text);
-    email = params.get("email");
-    name = params.get("name");
-  }
+    const existing = await fetch(contactUrl, { headers });
+    let response: Response;
 
-  if (!email || typeof email !== "string") {
-    return new Response(JSON.stringify({ error: "Email is required" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  const publicationId = import.meta.env.BEEHIIV_PUBLICATION_ID;
-  const apiKey = import.meta.env.BEEHIIV_API_KEY;
-
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: "API key not configured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  if (!publicationId) {
-    return new Response(JSON.stringify({ error: "Publication ID not configured" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  try {
-    const response = await fetch(
-      `https://api.beehiiv.com/v2/publications/${publicationId}/subscriptions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
+    if (existing.ok) {
+      response = await fetch(contactUrl, {
+        method: "PATCH",
+        headers,
         body: JSON.stringify({
-          email: email,
-          ...(name && { first_name: name }),
-          reactivate_existing: true,
-          send_welcome_email: true,
-          utm_source: "website",
+          unsubscribed: false,
+          ...(name && { properties: { first_name: name } }),
         }),
-      }
-    );
+      });
 
-    if (response.ok) {
-      const result = await response.json();
-      return new Response(JSON.stringify({ success: true, data: result }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
+      if (response.ok) {
+        response = await fetch(`${contactUrl}/segments/${segmentId}`, {
+          method: "POST",
+          headers,
+        });
+      }
+    } else if (existing.status === 404) {
+      response = await fetch("https://api.resend.com/contacts", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          email,
+          unsubscribed: false,
+          segments: [{ id: segmentId }],
+          ...(name && { properties: { first_name: name } }),
+        }),
       });
     } else {
-      const errorText = await response.text();
-      let error: { message?: string };
-      try {
-        error = JSON.parse(errorText);
-      } catch {
-        error = { message: errorText };
-      }
-      return new Response(JSON.stringify({ error: error.message || "Subscription failed" }), {
-        status: response.status,
-        headers: { "Content-Type": "application/json" },
-      });
+      response = existing;
     }
-  } catch (error) {
-    return new Response(JSON.stringify({ error: "Network error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+
+    if (!response.ok && response.status !== 409) {
+      const error = await response.json().catch(() => null);
+      return json({ error: error?.message || "Subscription failed" }, response.status);
+    }
+
+    return json({ success: true }, 200);
+  } catch {
+    return json({ error: "Network error" }, 500);
   }
 };
