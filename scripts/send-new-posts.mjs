@@ -6,6 +6,7 @@ const sha = process.env.GIT_SHA;
 const apiKey = process.env.RESEND_API_KEY;
 const segmentId = process.env.RESEND_SEGMENT_ID;
 const from = process.env.RESEND_FROM;
+const requestedFile = process.env.POST_FILE;
 const dryRun = process.argv.includes("--dry-run");
 const emailTemplate = readFileSync(new URL("../emails/new-post.html", import.meta.url), "utf8");
 
@@ -41,17 +42,11 @@ const headers = {
   "Content-Type": "application/json",
   "User-Agent": "matteodevenuto.com",
 };
-const changedFiles = git(
-  "diff",
-  "--name-only",
-  "--diff-filter=AMR",
-  `${sha}^`,
-  sha,
-  "--",
-  "src/content/blog"
-)
-  .split("\n")
-  .filter((file) => /\.mdx?$/.test(file));
+const changedFiles = requestedFile
+  ? [requestedFile]
+  : git("diff", "--name-only", "--diff-filter=AMR", `${sha}^`, sha, "--", "src/content/blog")
+      .split("\n")
+      .filter((file) => /\.mdx?$/.test(file));
 
 let existingNames = new Set();
 if (!dryRun) {
@@ -68,7 +63,7 @@ for (const file of changedFiles) {
   const current = matter(currentSource).data;
   const previousSource = show(`${sha}^`, file);
   const previous = previousSource ? matter(previousSource).data : null;
-  if (!isPublished(current) || (previous && isPublished(previous))) continue;
+  if (!isPublished(current) || (!requestedFile && previous && isPublished(previous))) continue;
 
   const path = file
     .replace(/^src\/content\/blog\//, "")
